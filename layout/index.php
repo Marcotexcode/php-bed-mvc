@@ -10,7 +10,8 @@
 </head>
     <body>
         <div class="container mt-5">
-            <h2><?= $this->name ?></h2>
+            <!-- Viene mostrato il contenuto dei vari tamplate passati dalla classe.  -->
+            <h2><?= $this->content ?></h2>
         </div>
     </body>
 </html>
