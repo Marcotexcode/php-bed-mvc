@@ -1,4 +1,12 @@
 <?php
 
+use App\Controllers\ProductController;
 
-echo 'SDFAsdfasdf';
+
+chdir(dirname(__DIR__));
+
+require 'app/Controllers/ProductController.php';
+
+$controller = new ProductController();
+
+$controller->display();

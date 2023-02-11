@@ -8,9 +8,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <title>Document</title>
 </head>
-<body>
-    <div class="container mt-5">
-        <h2 >hello</h2>
-    </div>
-</body>
+    <body>
+        <div class="container mt-5">
+            <h2><?= $this->name ?></h2>
+        </div>
+    </body>
 </html>

@@ -1,3 +1,3 @@
 <?php
 
-echo 'hello';
+echo 'index fuori cartelle';
