@@ -9,6 +9,17 @@ use App\Controllers\ProductController;
  */
 chdir(dirname(__DIR__));
 
+// Per vedere tutti gli errori. 
+error_reporting(E_ALL);
+
+// Prova connessione PDO.
+try {
+    $conn = new \PDO('mysql:host=localhost;dbname=php_bed_db', 'root', 'root');
+} catch (PDOException $e) {
+    die($e->getMessage());
+}
+
+
 // Includo il file PrdoductController dove e situata la classe ProductController. 
 require 'app/Controllers/ProductController.php';
 
