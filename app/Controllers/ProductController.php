@@ -9,7 +9,7 @@ class ProductController {
     protected string $tplDir = 'app/views';
 
     public function __construct(
-        // Presocorso del file. 
+        // Percorso del file. 
         protected string $layout = 'layout/index.php',
         
         // Contenuto del file. 

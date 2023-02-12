@@ -2,6 +2,7 @@
 
 // Chiamo il namespace della calsse ProductController. 
 use App\Controllers\ProductController;
+use App\DB\DBPDO;
 
 /**
  * Cambio la directory e la faccio puntare alla cartella DIR. 
@@ -9,19 +10,24 @@ use App\Controllers\ProductController;
  */
 chdir(dirname(__DIR__));
 
-// Per vedere tutti gli errori. 
-error_reporting(E_ALL);
+require __DIR__ . '/../DB/DBPDO.php';
 
-// Prova connessione PDO.
-try {
-    $conn = new \PDO('mysql:host=localhost;dbname=php_bed_db', 'root', 'root');
-} catch (PDOException $e) {
-    die($e->getMessage());
+
+// Prendo l'array di connessione. 
+$data = require 'config/database.php';
+
+// Instanziamo un aclasse la connessione e gli passo l'array di connessione.
+$pdoConn = DBPDO::getInstance($data);
+$conn = $pdoConn->getConn();
+
+$stm = $conn->query('select * from products', PDO::FETCH_ASSOC); // PDO::FETCH_ASSOC i valori vengono dati in arr associativo. 
+
+foreach ($stm as $row) {
+    var_dump($row);
 }
 
-
 // Includo il file PrdoductController dove e situata la classe ProductController. 
-require 'app/Controllers/ProductController.php';
+require __DIR__ . '/../app/Controllers/ProductController.php';
 
 // Creo un oggetto (instanza) della classe ProductController. 
 $controller = new ProductController();
