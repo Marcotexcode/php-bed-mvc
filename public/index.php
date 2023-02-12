@@ -1,9 +1,8 @@
 <?php
 
-// Chiamo il namespace della calsse ProductController. 
-use App\Controllers\ProductController;
-use App\DB\DBPDO;
 use App\DB\DbFactory;
+use App\Models\Product;
+use App\Controllers\ProductController;
 
 /**
  * Cambio la directory e la faccio puntare alla cartella DIR. 
@@ -11,42 +10,25 @@ use App\DB\DbFactory;
  */
 chdir(dirname(__DIR__));
 
-require __DIR__ . '/../db/DBPDO.php';
-require __DIR__ . '/../db/DbFactory.php';
-
-// Includo il file PrdoductController dove e situata la classe ProductController. 
-require __DIR__ . '/../app/Controllers/ProductController.php';
-
-
-// Prendo l'array di connessione. 
-$data = require 'config/database.php';
+require 'db/DBPDO.php';
+require 'db/DbFactory.php';
+require 'helpers/functions.php';
+require 'app/Models/Product.php';
+require 'app/Controllers/ProductController.php'; 
+$data = require 'config/database.php'; // Prendo l'array di connessione. 
 
 try {
-    // In questo modo creiamo un oggetto che viene ritornato passando l'array di connessione ($data) e poi fuori parentesi
-    // chiamiamo prendiamo la connessione PDO con getConn.
-    $conn = (DbFactory::create($data))->getConn();
+    $conn = (DbFactory::create($data))->getConn(); // In questo modo creiamo un oggetto che viene ritornato passando l'array di connessione ($data) e poi fuori parentesi prendiamo la connessione PDO con getConn.
 
-    // Creo un oggetto (instanza) della classe ProductController. 
-    // E gli passo come parametro la connessione PDO.
-    $productController = new ProductController($conn);
+    $product = new Product($conn);
+    $productController = new ProductController($conn, $product); // Creo oggetto e gli passo i parametri di connessione e il risultato di model product.
 
-    // Chiamo il metodo show della classe ProductController passandogli un parametro a caso. 
-   // $productController->show(1);
-   $productController->process();
-
-   // $productController->index();
-
-    // Chiamo il metodo display della classe ProductController. 
+    $productController->process();
     $productController->display();
 
 } catch (\PDOException $e) {
     echo $e->getMessage(); // Stampa errore che riporta PDO se fallisce qualcosa. 
 }
-
-
-
-
-
 
 /**
  * Dependency injection fa dipendere ad esempio la classe PostController da una risorsa esterna 
