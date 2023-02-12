@@ -2,20 +2,35 @@
 
 namespace App\Controllers;
 
+use PDO;
 
 class ProductController {
 
     // Imposta il percorso per i file (template) che si trovano in views. 
     protected string $tplDir = 'app/views';
 
+    // Con la sintassi di php 8 si possono definire le proprietà direttamente come parametro del costruttore 
     public function __construct(
+        /**
+         * Essendo un parametro di tipo PDO possiamo passare qualsiasi classe 
+         * che estenda PDO o ritorna un PDO.
+         */
+        protected PDO $conn,
         // Percorso del file. 
         protected string $layout = 'layout/index.php',
         
         // Contenuto del file. 
         protected string $content = '',
     ){
+        // // Facciamo la query selezionando tutti i prodotti. 
+        // $products = $conn->query('select * from products', PDO::FETCH_ASSOC)->fetchAll(); // PDO::FETCH_ASSOC i valori vengono dati in arr associativo. 
 
+        // ob_start();
+
+        // require $this->tplDir . '/index_products.php';
+        // $this->content = ob_get_contents();
+        
+        // ob_end_clean();
     }
 
     /**
@@ -57,6 +72,22 @@ class ProductController {
          *  in layout/index e poi il contenuto show_product.php verra cancellato in modo da non stampare a video lo 
          *  stesso contenuto. 
          */
+        ob_end_clean();
+    }
+
+    /**
+     * Lista di tutti i prodotti.
+     */
+    public function productIndex()
+    {
+        // Facciamo la query selezionando tutti i prodotti. 
+        $products = $this->conn->query('select * from products', PDO::FETCH_ASSOC)->fetchAll(); // PDO::FETCH_ASSOC i valori vengono dati in arr associativo. 
+
+        ob_start();
+
+        require $this->tplDir . '/index_products.php';
+        $this->content = ob_get_contents();
+        
         ob_end_clean();
     }
 }

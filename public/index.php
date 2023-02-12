@@ -14,41 +14,40 @@ chdir(dirname(__DIR__));
 require __DIR__ . '/../db/DBPDO.php';
 require __DIR__ . '/../db/DbFactory.php';
 
+// Includo il file PrdoductController dove e situata la classe ProductController. 
+require __DIR__ . '/../app/Controllers/ProductController.php';
+
 
 // Prendo l'array di connessione. 
 $data = require 'config/database.php';
 
 try {
-   // Instanziamo un aclasse la connessione e gli passo l'array di connessione.
-    $pdoConn = DbFactory::create($data);
+    // In questo modo creiamo un oggetto che viene ritornato passando l'array di connessione ($data) e poi fuori parentesi
+    // chiamiamo prendiamo la connessione PDO con getConn.
+    $conn = (DbFactory::create($data))->getConn();
 
-    // Prendiamo la connessione PDO.
-    $conn = $pdoConn->getConn();
+    // Creo un oggetto (instanza) della classe ProductController. 
+    // E gli passo come parametro la connessione PDO.
+    $controller = new ProductController($conn);
 
-    // Facciamo la query selezionando tutti i prodotti. 
-    $stm = $conn->query('select * from products', PDO::FETCH_ASSOC); // PDO::FETCH_ASSOC i valori vengono dati in arr associativo. 
+    // Chiamo il metodo show della classe ProductController passandogli un parametro a caso. 
+   // $controller->show(1);
+    $controller->productIndex();
 
-    if ($stm) {
-        foreach ($stm->fetchAll() as $row) {
-            var_dump($row);
-        }
-    } else {
-        $conn->errorInfo();
-    }
+    // Chiamo il metodo display della classe ProductController. 
+    $controller->display();
 
 } catch (\PDOException $e) {
     echo $e->getMessage(); // Stampa errore che riporta PDO se fallisce qualcosa. 
 }
 
 
-// Includo il file PrdoductController dove e situata la classe ProductController. 
-require __DIR__ . '/../app/Controllers/ProductController.php';
 
-// Creo un oggetto (instanza) della classe ProductController. 
-$controller = new ProductController();
 
-// Chiamo il metodo show della classe ProductController passandogli un parametro a caso. 
-$controller->show(1);
 
-// Chiamo il metodo display della classe ProductController. 
-$controller->display();
+
+/**
+ * Dependency injection fa dipendere ad esempio la classe PostController da una risorsa esterna 
+ * ma e il post controller che decide di che tipo di risorsa ha bisogno esempio ha bisogno di creare una risorsa
+ * modificare una risorsa prendere solo alcune risorse ecc....
+ */

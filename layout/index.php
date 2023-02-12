@@ -11,7 +11,7 @@
     <body>
         <div class="container mt-5">
             <!-- Viene mostrato il contenuto dei vari tamplate passati dalla classe.  -->
-            <h2><?= $this->content ?></h2>
+            <?= $this->content ?>
         </div>
     </body>
 </html>
