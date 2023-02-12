@@ -28,14 +28,16 @@ try {
 
     // Creo un oggetto (instanza) della classe ProductController. 
     // E gli passo come parametro la connessione PDO.
-    $controller = new ProductController($conn);
+    $productController = new ProductController($conn);
 
     // Chiamo il metodo show della classe ProductController passandogli un parametro a caso. 
-   // $controller->show(1);
-    $controller->productIndex();
+   // $productController->show(1);
+   $productController->process();
+
+   // $productController->index();
 
     // Chiamo il metodo display della classe ProductController. 
-    $controller->display();
+    $productController->display();
 
 } catch (\PDOException $e) {
     echo $e->getMessage(); // Stampa errore che riporta PDO se fallisce qualcosa. 

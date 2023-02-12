@@ -1,3 +1,4 @@
 <?php
 
-echo 'index fuori cartelle';
+
+header("location: public/index.php");
