@@ -2,7 +2,7 @@
 
     namespace App\DB;
     use PDO;
-    // Creare una classe che ci permetta di collegarci al db. 
+    // Creare una classe pattern singleton che ci permetta di collegarci al db. 
     class DBPDO {
 
         // Creo  una proprieta protected per la connessione. 
@@ -25,13 +25,13 @@
         public static function getInstance(array $options)
         {
             // Se la variabile instance non è settata.
-            if (!self::$instance) {
+            if (!static::$instance) {
                 // Allora impostiamo a instance il nome della classe passandogli le opzioni. 
-                self::$instance = new static($options); // In questo modo e come se scrivi new DBPDO($optioin)
+                static::$instance = new static($options); // In questo modo e come se scrivi new DBPDO($optioin)
             }
 
             // Alla fine faccio il retur dell' instanza.
-            return self::$instance;
+            return static::$instance;
         }
 
         // Creo un metodo pubblico per accedere alla connessione. 
