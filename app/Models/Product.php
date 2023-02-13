@@ -14,10 +14,12 @@ class Product {
     public function all(): array
     {
         $result = [];
-        $stm = $this->conn->query('SELECT * from products', PDO::FETCH_ASSOC); // PDO::FETCH_ASSOC i valori vengono dati in arr associativo. 
-       
-        if ($stm && $stm->rowCount()) {
-            $result = $stm->fetchAll();
+
+        $query = $this->conn->query('SELECT p.*, count(s.product_id) as subscribers FROM products p LEFT JOIN subscribers s ON p.entity_id=s.product_id GROUP BY p.entity_id ORDER BY entity_id ASC');
+    
+        while ($row = $query->fetch())
+        {
+            $result[] = $row;
         }
 
         return $result;
@@ -28,16 +30,27 @@ class Product {
      */
     public function find(int $product_id): array
     {
-        $result = [];
-        $sql = 'SELECT * from products where entity_id= :id';
-        $stm = $this->conn->prepare($sql);
-        if ($stm) {
-            $res = $stm->execute([ 'id' => $product_id]);
-            if ($res) {
-                $result = $stm->fetch();
-            }
-        }
+        $stm = $this->conn->prepare('SELECT * from products where entity_id= :id');
+        $stm->execute([ 'id' => $product_id]);
 
-        return $result;
+        return $stm->fetch();
+    }
+
+    /**
+     * Crea prodotto.
+     */
+    public function create(array $params): void
+    {
+        $query = $this->conn->prepare('INSERT INTO products (sku, name, description, price, quantity) VALUES (?, ?, ?, ?, ?)');
+        $query->execute($params);
+    }
+
+    /**
+     * Crea prodotto.
+     */
+    public function update(array $params, int $product_id): void
+    {
+        $query = $this->conn->prepare('UPDATE products SET sku=?, name=?, description=?, price=?, quantity=? WHERE entity_id=' .  $product_id);
+        $query->execute($params);
     }
 }

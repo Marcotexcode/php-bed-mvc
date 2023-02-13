@@ -2,7 +2,7 @@
 <!-- mostra la lista dei prodotti. -->
 <div class="card">
     <div class="card-header">
-        <a class="btn btn-success" href="product.php">Add product</a>
+        <a class="btn btn-success" href="/php-bed-mvc/public/product/create">Add product</a>
     </div>
     <div class="card-body">
         <table class="table">
@@ -14,6 +14,7 @@
                         <th scope="col">Name</th>
                         <th scope="col">Price</th>
                         <th scope="col">Qty</th>
+                        <th scope="col">Subscribers</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -25,7 +26,8 @@
                             <td><?= htmlentities($product['name']) ?></td>
                             <td><?= htmlentities(number_format($product['price'], 2)) ?> €</td>
                             <td><?= htmlentities($product['quantity']) ?></td>
-                            <td><a class="btn btn-warning" href="product.php?id=<?= $product['entity_id'] ?>">Edit</a></td>
+                            <td><?= $product['subscribers'] ?></td>
+                            <td><a class="btn btn-warning" href="/php-bed-mvc/public/product/show/<?= $product['entity_id'] ?>">Edit</a></td>
                         </tr>
                     <?php endforeach ?>
                 </tbody>
