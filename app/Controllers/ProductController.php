@@ -49,7 +49,7 @@ class ProductController extends BaseController {
     }
 
     /**
-     * crea prodotto.
+     * Crea prodotto.
      */
     public function save()
     {
@@ -60,14 +60,24 @@ class ProductController extends BaseController {
         header("location: /php-bed-mvc/public/products");
     }
 
-     /**
-     * crea prodotto.
+    /**
+     * Aggiorna prodotto.
      */
     public function update(int $product_id)
     {
         $params = [ $_POST['sku'], $_POST['description'], $_POST['name'], (double)$_POST['price'], (int)$_POST['qty']]; 
         
         $this->product->update($params, $product_id);
+
+        header("location: /php-bed-mvc/public/products");
+    }
+
+    /**
+     * Elimina prodotto.
+     */
+    public function delete(int $product_id)
+    {
+        $this->product->delete($product_id);
 
         header("location: /php-bed-mvc/public/products");
     }

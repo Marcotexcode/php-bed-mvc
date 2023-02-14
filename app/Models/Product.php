@@ -53,4 +53,13 @@ class Product {
         $query = $this->conn->prepare('UPDATE products SET sku=?, name=?, description=?, price=?, quantity=? WHERE entity_id=' .  $product_id);
         $query->execute($params);
     }
+
+    /**
+     * Elimina prodotto.
+     */
+    public function delete(int $product_id):void
+    {
+        $query = $this->conn->prepare('DELETE FROM products WHERE entity_id='. $product_id);
+        $query->execute();
+    }
 }

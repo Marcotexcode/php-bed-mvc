@@ -7,8 +7,8 @@ use Exception;
 class Router {
     
     public function __construct(protected array $routes = [
-        'POST' => [],
-        'GET'  => []
+        'POST'      => [],
+        'GET'       => [],
     ]) {}
 
     public function dispact(): array
@@ -21,13 +21,13 @@ class Router {
         $method = $_SERVER['REQUEST_METHOD']; // Salvo il metodo
 
         $urls = $this->routes[$method];
-
-
+        
         if (array_key_exists($segment, $urls)) {
             return $urls[$segment];
         } 
 
         $ret =  $this->matchRoute($urls, $segment);
+
         if(!$ret) {
             throw new Exception('No routes matched');
         }
@@ -46,16 +46,18 @@ class Router {
             $seg = preg_quote($seg);
             $pattern = preg_replace('/\\\:[a-zA-Z0-9\-\_]+/', '([a-zA-Z0-9\-\_]+)', $seg);
 
+            
             if( preg_match('@^'.$pattern.'$@', $segment, $matches)) {
-               
+                
                 array_shift($matches);
-                 $classArray[] = $matches;
-                 $ret = $classArray;
+                $classArray[] = $matches;
+                $ret = $classArray;
                 
                 break;
                
             }
         }
+
         return $ret;
     }
 

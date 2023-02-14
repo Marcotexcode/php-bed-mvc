@@ -18,8 +18,7 @@
                         <a class="btn btn-outline-secondary" href="/php-bed-mvc/public/products">Return</a>
                     </div>
                     <?php if ($product): ?>
-                        <form class="d-grid gap-2" method="post">
-                            <input type="hidden" name="action" value="delete">
+                        <form class="d-grid gap-2"  action="<?= '/php-bed-mvc/public/product/delete/' .  $product['entity_id'] ?>" method="POST">
                             <button onclick="return confirm('Delete user?')" type="submit" class="btn btn-outline-danger">Delete</button>
                         </form>
                     <?php endif ?>
@@ -60,7 +59,6 @@
                         <input required type="hidden" id="qty_orig" name="qty_orig" value="<?= $product ? $product['quantity'] : '' ?>">
                         <input required type="number" class="form-control" id="qty" name="qty" value="<?= $product ? $product['quantity'] : '' ?>"><br>
                     </div>
-                    <input type="hidden" name="action" value="save">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>

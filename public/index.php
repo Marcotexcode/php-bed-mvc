@@ -17,16 +17,13 @@ $appConfig = require 'config/app.config.php'; // Prendo l'array di connessione.
 $router = new Router($appConfig['routes']);
 
 $arrController = $router->dispact();
-
 $controllerParams = $arrController[2] ?? [];
 
 try {
     $conn = (DbFactory::create($data))->getConn(); // In questo modo creiamo un oggetto che viene ritornato passando l'array di connessione ($data) e poi fuori parentesi prendiamo la connessione PDO con getConn.
 
-    $product = new Product($conn);
-
-    $method = $arrController[1];
     $classController = $arrController[0];
+    $method = $arrController[1];
 
     $productController = new $classController($conn); // Creo oggetto e gli passo i parametri di connessione e il risultato di model product.
 
