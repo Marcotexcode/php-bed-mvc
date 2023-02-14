@@ -7,7 +7,7 @@ chdir(dirname(__DIR__));
 
 use Core\Router;
 use App\DB\DbFactory;
-use App\Models\Product;
+//use App\Models\Product;
 use App\Controllers\BaseController;
 
 require 'core/bootstrap.php';

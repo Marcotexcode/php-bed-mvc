@@ -4,11 +4,13 @@ namespace App\Controllers;
 
 use PDO;
 use App\Models\Product;
+use App\Models\Subscriber;
 
 class ProductController extends BaseController {
 
     protected string $tplDir = 'app/views/'; // Imposta il percorso per i file (template) che si trovano in views. 
     protected Product $product; 
+    protected Subscriber $subscriber; 
     protected $content = ''; 
     protected $layout = 'layout/index.php'; 
     
@@ -16,6 +18,7 @@ class ProductController extends BaseController {
         protected PDO $conn, // Essendo un parametro di tipo PDO possiamo passare qualsiasi classe che estenda PDO o ritorna un PDO. 
     ){
         $this->product = new Product($conn);
+        $this->subscriber = new Subscriber($conn);
     }
 
     /**
@@ -24,8 +27,9 @@ class ProductController extends BaseController {
     public function show(int $product_id)
     {
         $product = $this->product->find($product_id);
+        $subscribers = $this->subscriber->find($product_id);
         
-        $this->content = view('show_product', compact('product')); // Passiamo i dati nella funzione view in  helpers/functions.php
+        $this->content = view('show_product', compact(['product', 'subscribers'])); // Passiamo i dati nella funzione view in  helpers/functions.php
     }
 
     /**

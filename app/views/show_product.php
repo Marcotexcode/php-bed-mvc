@@ -63,5 +63,50 @@
                 </form>
             </div>
         </div>
+        <?php if ($product): ?>
+            <div class="card my-2">
+                <div class="card-header">
+                    <h2>Subscribers</h2>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <?php if ($subscribers): ?>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Email</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($subscribers as $subscriber): ?>
+                                    <tr>
+                                        <td><?= $subscriber['entity_id'] ?></td>
+                                        <td><?= $subscriber['email']  ?></td>
+                                        <td>
+                                            <form   action="<?= '/php-bed-mvc/public/subscriber/delete/' .  $subscriber['entity_id'] ?>" method="POST">
+                                                <button onclick="return confirm('Delete user?')" type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        <?php else: ?>
+                            <div class="text-center">No subscribers</div>
+                        <?php endif ?>
+                    </table>
+                    <h4 class="mt-5">Add Subscribers</h4>
+
+                    <form class="mt-3" method="POST" action="/php-bed-mvc/public/subscriber/save">
+                        <div class="form-group">
+                            <label for="sku">Email</label>
+                            <input required type="email" class="form-control" id="email" name="email">
+                            <input type="hidden" class="form-control" name="product_id" value="<?= $product['entity_id']  ?>">
+                        </div>
+                        <button type="submit" class="btn btn-primary my-3">Submit</button>
+                    </form>
+                </div>
+            </div>
+        <?php endif ?>
     </div>
 </div>
