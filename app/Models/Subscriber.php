@@ -9,23 +9,6 @@ class Subscriber {
     public function __construct(protected PDO $conn){}
     
     /**
-     * Recupera tutti i prodotti.
-     */
-    // public function all(): array
-    // {
-    //     $result = [];
-
-    //     $query = $this->conn->query('SELECT * FROM subscribers WHERE product_id=?');
-    
-    //     while ($row = $query->fetch())
-    //     {
-    //         $result[] = $row;
-    //     }
-
-    //     return $result;
-    // }
-
-    /**
      * Trova un abbonato in base all' id del prodotto.
      */
     public function find(int $product_id): array
@@ -51,14 +34,22 @@ class Subscriber {
         $query->execute($params);
     }
 
-    // /**
-    //  * Crea prodotto.
-    //  */
-    // public function update(array $params, int $product_id): void
-    // {
-    //     $query = $this->conn->prepare('UPDATE products SET sku=?, name=?, description=?, price=?, quantity=? WHERE entity_id=' .  $product_id);
-    //     $query->execute($params);
-    // }
+    /**
+     * Trova un prodotto in base all'id.
+     */
+    public function findEmail(string $email): array
+    {
+        $stm = $this->conn->prepare('SELECT * FROM subscribers WHERE email=?');
+        $stm->execute([$email]);
+
+        $result = [];
+        while ($row = $stm->fetch())
+        {
+            $result[] = $row;
+        }
+
+        return  $result;
+    }
 
     /**
      * Elimina abbonato.
@@ -66,6 +57,15 @@ class Subscriber {
     public function delete(int $subscriber_id):void
     {
         $query = $this->conn->prepare('DELETE FROM subscribers WHERE entity_id='. $subscriber_id);
+        $query->execute();
+    }
+
+    /**
+     * Elimina tutti gli abbonati di quel prodotto.
+     */
+    public function deleteByProduct(int $product_id):void
+    {
+        $query = $this->conn->prepare('DELETE FROM subscribers WHERE product_id='. $product_id);
         $query->execute();
     }
 }

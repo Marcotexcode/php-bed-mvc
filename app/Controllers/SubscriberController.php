@@ -7,13 +7,13 @@ use App\Models\Subscriber;
 
 class SubscriberController extends BaseController {
 
-    protected string $tplDir = 'app/views/'; // Imposta il percorso per i file (template) che si trovano in views. 
+    protected string $tplDir = 'app/views/'; 
     protected Subscriber $subscriber; 
     protected $content = ''; 
     protected $layout = 'layout/index.php'; 
     
     public function __construct( // Con la sintassi di php 8 si possono definire le proprietà direttamente come parametro del costruttore 
-        protected PDO $conn, // Essendo un parametro di tipo PDO possiamo passare qualsiasi classe che estenda PDO o ritorna un PDO. 
+        protected PDO $conn, 
     ){
         $this->subscriber = new Subscriber($conn);
     }
@@ -25,17 +25,16 @@ class SubscriberController extends BaseController {
     {
         $params = [ (int)$_POST['product_id'], $_POST['email'] ]; 
 
-        // $subscribers = $this->subscriber->find((int)$_POST['product_id']);
+        $sub = $this->subscriber->findEmail($_POST['email']);
 
-        // foreach ($subscribers as $subscriber) {
-        //     if ($subscriber['email'] === $_POST['email']) {
-        //         var_dump('presente'); die;
-        //     } else {
-        // //         $this->subscriber->create($params);
-        //     }
-        // }
-       
-        $this->subscriber->create($params);
+        if(count($sub)) {
+            
+            var_dump('Gia presente'); die;
+
+        } else {
+
+            $this->subscriber->create($params);
+        }
 
         header("location: /php-bed-mvc/public/product/show/" . (int)$_POST['product_id']);
     }

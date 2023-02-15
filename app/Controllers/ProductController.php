@@ -70,7 +70,28 @@ class ProductController extends BaseController {
     public function update(int $product_id)
     {
         $params = [ $_POST['sku'], $_POST['description'], $_POST['name'], (double)$_POST['price'], (int)$_POST['qty']]; 
-        
+       
+        $subscribers =  $this->subscriber->find($product_id);
+
+        $notifySubscribers = false;
+
+        if ((int)$_POST['qty'] > 0) {
+            if ((int)$_POST['qty_orig'] === 0) {
+                $notifySubscribers = true;
+            }
+        }
+
+        if (count($subscribers) && $notifySubscribers) {
+
+            $mailSubscribers = [];
+            foreach($subscribers as $subscriber){
+                $mailSubscribers[] = $subscriber['email'];
+            }
+
+            // Delete subscribers
+            $this->subscriber->deleteByProduct($product_id);
+        }
+
         $this->product->update($params, $product_id);
 
         header("location: /php-bed-mvc/public/products");
@@ -79,7 +100,7 @@ class ProductController extends BaseController {
     /**
      * Elimina prodotto.
      */
-    public function delete(int $product_id)
+    public function delete(int $product_id): void
     {
         $this->product->delete($product_id);
 
