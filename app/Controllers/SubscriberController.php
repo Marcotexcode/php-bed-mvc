@@ -12,7 +12,7 @@ class SubscriberController extends BaseController {
     protected $content = ''; 
     protected $layout = 'layout/index.php'; 
     
-    public function __construct( // Con la sintassi di php 8 si possono definire le proprietà direttamente come parametro del costruttore 
+    public function __construct(
         protected PDO $conn, 
     ){
         $this->subscriber = new Subscriber($conn);
@@ -36,7 +36,7 @@ class SubscriberController extends BaseController {
             $this->subscriber->create($params);
         }
 
-        header("location: /php-bed-mvc/public/product/show/" . (int)$_POST['product_id']);
+        header("location: /product/show/" . (int)$_POST['product_id']);
     }
 
     /**
@@ -46,7 +46,7 @@ class SubscriberController extends BaseController {
     {
         $this->subscriber->delete($subscriber_id);
 
-        header("location: /php-bed-mvc/public/products");
+        header("location: /");
     }
 
     public function display(): void

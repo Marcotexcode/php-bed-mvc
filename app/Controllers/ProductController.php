@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+session_start();
 
 use PDO;
 use App\Models\Product;
@@ -8,14 +9,14 @@ use App\Models\Subscriber;
 
 class ProductController extends BaseController {
 
-    protected string $tplDir = 'app/views/'; // Imposta il percorso per i file (template) che si trovano in views. 
+    protected string $tplDir = 'app/views/'; 
     protected Product $product; 
     protected Subscriber $subscriber; 
     protected $content = ''; 
     protected $layout = 'layout/index.php'; 
     
-    public function __construct( // Con la sintassi di php 8 si possono definire le proprietà direttamente come parametro del costruttore 
-        protected PDO $conn, // Essendo un parametro di tipo PDO possiamo passare qualsiasi classe che estenda PDO o ritorna un PDO. 
+    public function __construct(
+        protected PDO $conn,
     ){
         $this->product = new Product($conn);
         $this->subscriber = new Subscriber($conn);
@@ -29,7 +30,7 @@ class ProductController extends BaseController {
         $product = $this->product->find($product_id);
         $subscribers = $this->subscriber->find($product_id);
         
-        $this->content = view('show_product', compact(['product', 'subscribers'])); // Passiamo i dati nella funzione view in  helpers/functions.php
+        $this->content = view('show_product', compact(['product', 'subscribers']));
     }
 
     /**
@@ -39,7 +40,7 @@ class ProductController extends BaseController {
     {
         $products = $this->product->all();
 
-        $this->content = view('index_products', compact('products')); // Passiamo i dati nella funzione view in  helpers/functions.php
+        $this->content = view('index_products', compact('products'));
     }
 
     /**
@@ -49,7 +50,7 @@ class ProductController extends BaseController {
     {
         $product = '';
 
-        $this->content = view('show_product', compact('product')); // Passiamo i dati nella funzione view in  helpers/functions.php
+        $this->content = view('show_product', compact('product'));
     }
 
     /**
@@ -61,7 +62,7 @@ class ProductController extends BaseController {
         
         $this->product->create($params);
 
-        header("location: /php-bed-mvc/public/products");
+        header("location: /");
     }
 
     /**
@@ -88,13 +89,16 @@ class ProductController extends BaseController {
                 $mailSubscribers[] = $subscriber['email'];
             }
 
+            $_SESSION['message'] = 'E-mail sent to: ' . implode( ', ',  $mailSubscribers). '.';
+            $_SESSION['success'] = 'success';
+
             // Delete subscribers
             $this->subscriber->deleteByProduct($product_id);
         }
 
         $this->product->update($params, $product_id);
 
-        header("location: /php-bed-mvc/public/products");
+        header("location: /");
     }
 
     /**
@@ -104,7 +108,7 @@ class ProductController extends BaseController {
     {
         $this->product->delete($product_id);
 
-        header("location: /php-bed-mvc/public/products");
+        header("location: /");
     }
 
     public function display(): void

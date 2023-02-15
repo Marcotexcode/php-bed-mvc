@@ -1,9 +1,9 @@
 <!-- Mostra il template del singolo prodotto. -->
 <?php
     if ($product) {
-        $route = '/php-bed-mvc/public/product/update/' .  $product['entity_id'];
+        $route = '/product/update/' .  $product['entity_id'];
     } else {
-        $route = '/php-bed-mvc/public/product/save';
+        $route = '/product/save';
     }
 ?>
 <div class="row">
@@ -15,10 +15,10 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 my-4 d-grid gap-2">
-                        <a class="btn btn-outline-secondary" href="/php-bed-mvc/public/products">Return</a>
+                        <a class="btn btn-outline-secondary" href="/">Return</a>
                     </div>
                     <?php if ($product): ?>
-                        <form class="d-grid gap-2"  action="<?= '/php-bed-mvc/public/product/delete/' .  $product['entity_id'] ?>" method="POST">
+                        <form class="d-grid gap-2"  action="<?= '/product/delete/' .  $product['entity_id'] ?>" method="POST">
                             <button onclick="return confirm('Delete user?')" type="submit" class="btn btn-outline-danger">Delete</button>
                         </form>
                     <?php endif ?>
@@ -84,7 +84,7 @@
                                         <td><?= $subscriber['entity_id'] ?></td>
                                         <td><?= $subscriber['email']  ?></td>
                                         <td>
-                                            <form   action="<?= '/php-bed-mvc/public/subscriber/delete/' .  $subscriber['entity_id'] ?>" method="POST">
+                                            <form   action="<?= '/subscriber/delete/' .  $subscriber['entity_id'] ?>" method="POST">
                                                 <button onclick="return confirm('Delete user?')" type="submit" class="btn btn-danger">Delete</button>
                                             </form>
                                         </td>
@@ -97,7 +97,7 @@
                     </table>
                     <h4 class="mt-5">Add Subscribers</h4>
 
-                    <form class="mt-3" method="POST" action="/php-bed-mvc/public/subscriber/save">
+                    <form class="mt-3" method="POST" action="/subscriber/save">
                         <div class="form-group">
                             <label for="sku">Email</label>
                             <input required type="email" class="form-control" id="email" name="email">

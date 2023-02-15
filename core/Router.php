@@ -13,12 +13,12 @@ class Router {
 
     public function dispact(): array
     {
-        $url = $_SERVER['REQUEST_URI'] ?? $_SERVER['REDIRECT_URL']; // Catturo l'url.
+        $url = $_SERVER['REQUEST_URI'] ?? $_SERVER['REDIRECT_URL']; 
 
         $segment = parse_url($url, PHP_URL_PATH);
         $segment = $segment ?: '/';
 
-        $method = $_SERVER['REQUEST_METHOD']; // Salvo il metodo
+        $method = $_SERVER['REQUEST_METHOD'];
 
         $urls = $this->routes[$method];
         
